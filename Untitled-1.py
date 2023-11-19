@@ -5,16 +5,16 @@ win_width = 600
 win_height = 500
 display.set_caption("Ping - Pong")
 window = display.set_mode((win_width, win_height))
-window.fill(back)
+
 font.init()
 font = font.Font(None,35)
-lose1 = font.render('YOU LOSE',200,200)
-lose2 = font.render('YOU LOSE',200,200)
+lose1 = font.render('1 Player LOSE',True, (200,0,0))
+lose2 = font.render('2 Player LOSE', True, (200,0,0))
 
 r_img = 'racket.png'
 speed = 5
-weight = 150
-hight = 50
+weight = 50
+hight = 150
 speed_x = 3
 speed_y = 3
 class GameSprite(sprite.Sprite):
@@ -39,32 +39,34 @@ class Player(GameSprite):
     # метод для управления спрайтом стрелками клавиатуры
     def update_r(self):
         keys = key.get_pressed()
-        if keys[K_UP] and self.rect.x > 5:
+        if keys[K_UP] and self.rect.y > 0:
             self.rect.y -= self.speed
-        if keys[K_DOWN] and self.rect.x < win_width - 80:
+        if keys[K_DOWN] and self.rect.y < win_height - hight:
             self.rect.y += self.speed
     def update_l(self):
         keys = key.get_pressed()
-        if keys[K_w] and self.rect.x > 5:
+        if keys[K_w] and self.rect.y > 0:
             self.rect.y -= self.speed
-        if keys[K_s] and self.rect.x < win_width - 80:
+        if keys[K_s] and self.rect.y < win_height - hight:
             self.rect.y += self.speed
+            
 
 
 
 run = True 
+finish = False
 clock = time.Clock()
 FPS = 60
-racket1 = Player(r_img,30,200,speed,weight,hight)
-racket2 = Player(r_img,520,200,speed,weight,hight)
-ball = GameSprite("tenis_ball.png",200,200,speed,50,50)
+racket1 = Player(r_img,30,200,weight,hight,speed)
+racket2 = Player(r_img,520,200,weight,hight,speed)
+ball = GameSprite("tenis_ball.png",200,200,50,50,speed)
 
 while run:
     for e in event.get():
         if e.type == QUIT:
             run = False
     
-
+    window.fill(back)
     racket1.update_l()
     racket2.update_r()
     ball.rect.x += speed_x
